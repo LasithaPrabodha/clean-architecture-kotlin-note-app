@@ -1,5 +1,6 @@
 package com.lasithaprabodha.noteapp.feature_note.presentation.add_edit_note
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import com.lasithaprabodha.noteapp.feature_note.presentation.add_edit_note.compo
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddEditNoteScreen(
     navController: NavController,
@@ -71,7 +73,7 @@ fun AddEditNoteScreen(
         },
         scaffoldState = scaffoldState
 
-    ) { padding ->
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -1,5 +1,6 @@
 package com.lasithaprabodha.noteapp.feature_note.presentation.notes
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -36,8 +37,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lasithaprabodha.noteapp.feature_note.presentation.notes.components.NoteItem
 import com.lasithaprabodha.noteapp.feature_note.presentation.notes.components.OrderSection
+import com.lasithaprabodha.noteapp.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NotesScreen(navController: NavController, viewModel: NotesViewModel = hiltViewModel()) {
     val state = viewModel.state.value
@@ -46,12 +49,15 @@ fun NotesScreen(navController: NavController, viewModel: NotesViewModel = hiltVi
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = {}, backgroundColor = MaterialTheme.colors.primary) {
+            FloatingActionButton(
+                onClick = { navController.navigate(Screen.AddEditNoteScreen.route) },
+                backgroundColor = MaterialTheme.colors.primary
+            ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
             }
         },
         scaffoldState = scaffoldState
-    ) { padding ->
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -78,31 +84,37 @@ fun NotesScreen(navController: NavController, viewModel: NotesViewModel = hiltVi
                         .padding(vertical = 16.dp),
                     noteOrder = state.noteOrder,
                     onOrderChange = { viewModel.onEvent(NotesEvent.Order(it)) })
-                Spacer(modifier = Modifier.height(16.dp))
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(state.notes) { note ->
-                        NoteItem(
-                            note = note,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { },
-                            onDeleteClick = {
-                                viewModel.onEvent(NotesEvent.DeleteNote(note))
-                                scope.launch {
-                                    val result = scaffoldState.snackbarHostState.showSnackbar(
-                                        message = "Note deleted",
-                                        actionLabel = "Undo"
-                                    )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(state.notes) { note ->
+                    NoteItem(
+                        note = note,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate(
+                                    Screen.AddEditNoteScreen.route +
+                                            "?noteId=${note.id}&noteColor=${note.color}"
+                                )
+                            },
+                        onDeleteClick = {
+                            viewModel.onEvent(NotesEvent.DeleteNote(note))
+                            scope.launch {
+                                val result = scaffoldState.snackbarHostState.showSnackbar(
+                                    message = "Note deleted",
+                                    actionLabel = "Undo"
+                                )
 
-                                    if (result == SnackbarResult.ActionPerformed) {
-                                        viewModel.onEvent(NotesEvent.RestoreNote)
-                                    }
+                                if (result == SnackbarResult.ActionPerformed) {
+                                    viewModel.onEvent(NotesEvent.RestoreNote)
                                 }
-                            })
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
+                            }
+                        })
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
+
         }
     }
 }
