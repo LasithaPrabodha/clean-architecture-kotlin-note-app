@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.lasithaprabodha.noteapp.feature_note.data.data_source.NoteDatabase
 import com.lasithaprabodha.noteapp.feature_note.domain.repository.NoteRepository
-import com.lasithaprabodha.noteapp.feature_note.domain.repository.NoteRepositoryImpl
+import com.lasithaprabodha.noteapp.feature_note.data.repository.NoteRepositoryImpl
 import com.lasithaprabodha.noteapp.feature_note.domain.use_cases.AddNoteUseCase
 import com.lasithaprabodha.noteapp.feature_note.domain.use_cases.DeleteNoteUseCase
 import com.lasithaprabodha.noteapp.feature_note.domain.use_cases.GetNoteUseCase
