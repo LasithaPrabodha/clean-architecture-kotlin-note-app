@@ -68,7 +68,7 @@ fun NotesScreen(navController: NavController, viewModel: NotesViewModel = hiltVi
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Your note", style = MaterialTheme.typography.h4)
+                Text(text = "Your notes", style = MaterialTheme.typography.h4)
                 IconButton(onClick = { viewModel.onEvent(NotesEvent.ToggleOrderSelection) }) {
                     Icon(imageVector = Icons.Default.Sort, contentDescription = "Sort")
                 }
